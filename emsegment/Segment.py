@@ -229,7 +229,8 @@ def segment_dataset(
     if use_mask and mask_path is None:
         # If no mask_path is specified, we assume it exists as a dataset in the raw image store
         mask_path = os.path.join(raw_path, mask_dataset)
-        assert os.path.exists(mask_path)
+        if not os.path.exists(mask_path):
+            raise FileNotFoundError(f'Mask was not found at path {mask_path}. Use --no-mask to run without a mask.')
         mask_path = raw_path
         logging.info(f'Will use mask from {mask_path}')
 
